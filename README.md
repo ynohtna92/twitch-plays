@@ -1,5 +1,5 @@
-Twitch Plays
-============
+Twitch Plays (forked by ynohtna92)
+==================================
 
 Clone of [Twitch Plays Pokemon](http://twitch.tv/twitch_plays_pokemon).
 
@@ -8,9 +8,16 @@ Clone of [Twitch Plays Pokemon](http://twitch.tv/twitch_plays_pokemon).
 Installation
 ============
 
-You're going to need to have [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with Python [2.7.x](http://www.python.org/download/releases/2.7/).
+Dependencies
+------------
 
-Move `config/config_dist.py` to `config/config.py`, and replace the username/password there with your Twitch username and [OAuth token](http://www.twitchapps.com/tmi/). Feel free to modify the start throttle here aswell.
+	You're going to need to have [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with Python [2.7.x](http://www.python.org/download/releases/2.7/).
+
+	[irc 8.5.4](https://pypi.python.org/pypi/irc) must also be installed.
+
+
+
+Replace the username/password in the 'config/config.py' file with your Twitch username and [OAuth token](http://www.twitchapps.com/tmi/). Feel free to modify the start throttle here aswell.
 
 In your VBA/Emulator, set the controls to the following -
 
@@ -25,7 +32,7 @@ Start: 6
 Select: 7
 ```
 
-After you've set that up, open up your terminal and type `chmod +x serve.py` then type `./serve.py`. If your username/password is wrong you will be notified.
+After you've set that up, open up your terminal and type `chmod +x TwitchPlays.py` then type `./TwitchPlays.py`. If your username/password is wrong you will be notified.
 
 Whilst the script is running make sure you have your emulator in focus as your primary window. If you click onto another window, the script won't work. If you're not able to stay focused on one window as you need to do other things with your computer, you could try running all of this from within a virtual machine.
 

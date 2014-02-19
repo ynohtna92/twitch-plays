@@ -1,6 +1,21 @@
 import win32api
 import win32con
+
 import time
+
+"""
+Remap VBA/Emulator keys to the following.
+
+Up: 0
+Down: 1
+Left: 2
+Right: 3
+Button A: 4
+Button B: 5
+Start: 6
+Select: 7
+
+"""
 
 class Game:
 
@@ -15,9 +30,6 @@ class Game:
         'select': 0x37
     }
 
-    def get_valid_buttons(self):
-        return [button for button in self.keymap.keys()]
-
     def is_valid_button(self, button):
         return button in self.keymap.keys()
 
@@ -26,5 +38,5 @@ class Game:
 
     def push_button(self, button):
         win32api.keybd_event(self.button_to_key(button), 0, 0, 0)
-        time.sleep(.15)
+        time.sleep(.07) # Minimum amount of time it takes for the key to register - adjust if nessessary
         win32api.keybd_event(self.button_to_key(button), 0, win32con.KEYEVENTF_KEYUP, 0)

@@ -1,51 +1,52 @@
-import time
+from ircd import Irc
+from game import Game
+from misc import pp, pbot, pbutton
+from control import Control
 
-from config.config import config
-from lib.irc import Irc
-from lib.game import Game
-from lib.misc import pbutton
+import time
+import threading
+import Queue
+
+import operator
+
+exitFlag = 0
 
 class Bot:
 
-    def __init__(self):
+    def __init__(self, config):
         self.config = config
-        self.irc = Irc(config)
         self.game = Game()
-
-        self.message_buffer = [{'username': '', 'button': ''}] * 10
-
-
-    def set_message_buffer(self, message):
-        chat_height = 10
-        self.message_buffer.insert(chat_height - 1, message)
-        self.message_buffer.pop(0)
-
+        self.queue = Queue.Queue(0)
+        pp("Initiating Irc Thread")
+        self.control = Control(1, "Controller-1", config, self.queue)
+        self.control.start()
 
     def run(self):
+        pp("Starting Monitoring Loop")
         last_start = time.time()
+        if self.config["polling"]["enabled"]:
+            polling = time.time()
+            tick = self.config["polling"]["time"]
+            poll = {"a":0, "b":0, "up":0, "down":0, "left":0, "right":0, "start":0, "select":0}
+        while not exitFlag:
+            if self.config["polling"]["enabled"] and time.time() > (polling + tick):
+                polling = time.time()
+                turn = max(poll.iteritems(), key=operator.itemgetter(1))[0]
+                if poll[turn] != 0:
+                    self.game.push_button(turn)
+                    print turn
+                poll = dict.fromkeys(poll, 0)
 
-        while True:
-            new_messages = self.irc.recv_messages(1024)
-            
-            if not new_messages:
-                continue
-
-            for message in new_messages: 
-                button = message['message'].lower()
-                username = message['username'].lower()
-
-                if not self.game.is_valid_button(button):
-                    continue
-
-                print button
-
-                if self.config['start_throttle']['enabled'] and button == 'start':
+            if not self.queue.empty():
+                job = self.queue.get()
+                button = job["msg"]
+                user = job["user"].capitalize()
+                pbutton(user, button)
+                if self.config['start_throttle']['enabled'] and button == 'start':   
                     if time.time() - last_start < self.config['start_throttle']['time']:
                         continue
-
-                if button == 'start':
                     last_start = time.time()
-
-                self.set_message_buffer({'username': username, 'button': button})
-                pbutton(self.message_buffer)
-                self.game.push_button(button)
+                if self.config["polling"]["enabled"]:
+                    poll[button] += 1
+                else:
+                    self.game.push_button(button)
