@@ -8,12 +8,11 @@ Clone of [Twitch Plays Pokemon](http://twitch.tv/twitch_plays_pokemon).
 Installation
 ============
 
-Dependencies
-------------
+**Dependencies**
 
-	You're going to need to have [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with Python [2.7.x](http://www.python.org/download/releases/2.7/).
+* You're going to need to have [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with Python [2.7.x](http://www.python.org/download/releases/2.7/).
 
-	[irc 8.5.4](https://pypi.python.org/pypi/irc) must also be installed.
+* [irc 8.5.4](https://pypi.python.org/pypi/irc) must also be installed.
 
 
 
