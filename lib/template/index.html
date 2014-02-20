@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitch Plays Web Interface</title>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <style>
+    tr {
+      font-family: monospace;
+      height: 100%;
+      text-decoration:  none;
+      background-color: black;
+      color: white;
+      white-space: pre;
+    }
+
+    .table td {
+      padding: 0px;
+      border-top: none;
+      line-height: 12px;
+      height: 12px; 
+      text-align: center;
+    }
+
+    .row {
+      padding: 0px;
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    .span4 {
+      width: 200px;
+    }
+
+    #time {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #title {
+      font-size: 20px;
+      line-height: 20px;
+      height: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Twitch Plays Web Interface<br>Support this project on <a href="https://github.com/ynohtna92/twitch-plays">github</a></h1>
+    <hr>
+      WebSocket status : <span id="message"></span>
+    <hr>
+
+      <div class="row">
+        <div class="span4">
+          <table  class="table table-bordered">
+            <tr><td></td></tr>
+            <tr id="title">
+              <td class="title">Twitch Plays</td>
+            </tr>
+            <tr id="title">
+              <td class="title">Monopoly</td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+              <td id="time">0d 0h 0m 0s</td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+              <td id="0"></td>
+            </tr>
+            <tr>
+              <td id="1"></td>
+            </tr>
+            <tr>
+              <td id="2"></td>
+            </tr>
+            <tr>
+              <td id="3"></td>
+            </tr>
+            <tr>
+              <td id="4"></td>
+            </tr>
+            <tr>
+              <td id="5"></td>
+            </tr>
+            <tr>
+              <td id="6"></td>
+            </tr>
+            <tr>
+              <td id="7"></td>
+            </tr>
+            <tr>
+              <td id="8"></td>
+            </tr>
+            <tr>
+              <td id="9"></td>
+            </tr>
+            <tr>
+              <td id="10"></td>
+            </tr>
+            <tr>
+              <td id="11"></td>
+            </tr>
+            <tr>
+              <td id="12"></td>
+            </tr>
+            <tr>
+              <td id="13"></td>
+            </tr>
+            <tr>
+              <td id="14"></td>
+            </tr>
+            <tr>
+              <td id="15"></td>
+            </tr>
+            <tr>
+              <td id="16"></td>
+            </tr>
+            <tr><td></td></tr>
+          </table>
+        </div>
+      </div>
+
+    <hr>
+  </div>
+  <script>
+    var ws = new WebSocket('ws://localhost:8888/ws');
+    var $message = $('#message');
+    var buffer_size = 16;
+    var input_stream_buffer = new Array(16);
+    var start = new Date(1392296399 * 1000);
+
+    setInterval(function(){
+      var total_seconds = (new Date - start) / 1000;
+
+      var days = Math.floor(total_seconds / 86400);
+      total_seconds = total_seconds % 86400;
+
+      var hours = Math.floor(total_seconds / 3600); 
+      total_seconds = total_seconds % 3600;
+
+      var minutes = Math.floor(total_seconds / 60);
+      total_seconds = total_seconds % 60;
+
+      var seconds = Math.floor(total_seconds);
+
+      var timeString = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+      $('#time').text(timeString);
+    }, 1000);
+
+    ws.onopen = function(){
+      $message.attr("class", 'label label-success');
+      $message.text('open');
+    };
+    ws.onmessage = function(ev){
+      $message.attr("class", 'label label-info');
+      $message.hide();
+      $message.fadeIn("slow");
+      $message.text('recieved message');
+
+      var json = JSON.parse(ev.data);
+
+      shiftArray();
+      input_stream_buffer[16] = json.button.formated;
+
+      for (var i = 0; i < input_stream_buffer.length; i++){
+        $('#' + i).text(input_stream_buffer[i]);
+      }
+    };
+    ws.onclose = function(ev){
+      $message.attr("class", 'label label-important');
+      $message.text('closed');
+    };
+    ws.onerror = function(ev){
+      $message.attr("class", 'label label-warning');
+      $message.text('error occurred');
+    };
+
+    function shiftArray(){
+      input_stream_buffer = input_stream_buffer.concat(input_stream_buffer.splice(0,1));
+    };
+
+    function time(){
+      var tottal_seconds = (new Date - start) / 1000;
+
+      var hours = Math.floor(total_seconds / 3600); 
+      total_seconds = total_seconds % 3600;
+
+      var minutes = Math.floor(total_seconds / 60);
+      total_seconds = total_seconds % 60;
+
+      var seconds = Math.floor(total_seconds);
+
+      hours = pretty_time_string(hours);
+      minutes = pretty_time_string(minutes);
+      seconds = pretty_time_string(seconds);
+
+      var timeString = days + "d " + hours + "h " + minutes + "m " + seconds + "s"
+    };
+  </script>
+</body>
+</html>

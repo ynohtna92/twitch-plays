@@ -1,4 +1,4 @@
-from ircd import Irc
+from ircbot import Irc
 from game import Game
 from misc import pp, pbot, pbutton
 from control import Control
@@ -9,6 +9,8 @@ import Queue
 
 import operator
 
+import web as web
+
 exitFlag = 0
 
 class Bot:
@@ -18,9 +20,16 @@ class Bot:
         self.game = Game()
         self.queue = Queue.Queue(0)
         pp("Initiating Irc Thread")
-        self.control = Control(1, "Controller-1", config, self.queue)
-        self.control.daemon = True
-        self.control.start()
+        self.c1 = Control(1, "Controller-1", self.config, self.queue, Irc.from_config(self.config, self.queue).start)
+        self.c1.daemon = True
+        self.c1.start()
+        pp("Initiating Tornado Thread")
+        self.c2 = Control(2, "Controller-2", self.config, self.queue, web.run)
+        self.c2.daemon = True
+        self.c2.start()
+
+    def to_web(self, msg):
+        web.send(msg)
 
     def run(self):
         try:
@@ -43,7 +52,8 @@ class Bot:
                     job = self.queue.get()
                     button = job["msg"]
                     user = job["user"].capitalize()
-                    pbutton(user, button)
+                    print(pbutton(user, button))
+                    self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})
                     if self.config['start_throttle']['enabled'] and button == 'start':   
                         if time.time() - last_start < self.config['start_throttle']['time']:
                             continue
@@ -53,6 +63,7 @@ class Bot:
                     else:
                         self.game.push_button(button)
         except KeyboardInterrupt:
+            print ""
             print "Shutting Down...."
             print "Thank you for using twitch-plays."
             print "Support this project at https://github.com/ynohtna92/twitch-plays"

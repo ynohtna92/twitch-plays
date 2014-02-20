@@ -52,6 +52,6 @@ def pbutton(username, button):
 
     username = username[:username_end]
 
-    print '%s%s%s' % (username, ' '*whitespace_size, button)
+    return '%s%s%s' % (username, ' '*whitespace_size, button)
 
 #    print '[%s] %s pressed %s' % (time.strftime('%H:%M:%S'), gra.format(username), gra.format(button))
