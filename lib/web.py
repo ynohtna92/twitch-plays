@@ -26,6 +26,7 @@ class SocketHandler(websocket.WebSocketHandler):
 application = tornado.web.Application([
 		(r"/", MainHandler),
 		(r"/ws", SocketHandler),
+		(r"/font/(.*)", tornado.web.StaticFileHandler, {"path": "lib/font/"}),
 	])
 
 def send(msg):
