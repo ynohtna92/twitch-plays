@@ -34,10 +34,10 @@ class Bot:
     def run(self):
         pp("Starting Monitoring Loop")
         last_start = time.time()
-        mode = True
+        mode = False
         if self.config["anarchy-democracy"]["enabled"]:
             vote_size = self.config["anarchy-democracy"]["size"]
-            vote_state =  530 #int(round(vote_size / 2))
+            vote_state =  500 #int(round(vote_size / 2))
         if self.config["polling"]["enabled"] or self.config["anarchy-democracy"]["enabled"]:
             polling = time.time()
             tick = self.config["polling"]["time"]
