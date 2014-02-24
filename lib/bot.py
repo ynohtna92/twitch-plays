@@ -32,39 +32,57 @@ class Bot:
         web.send(msg)
 
     def run(self):
-        try:
-            pp("Starting Monitoring Loop")
-            last_start = time.time()
-            if self.config["polling"]["enabled"]:
+        pp("Starting Monitoring Loop")
+        last_start = time.time()
+        mode = True
+        if self.config["anarchy-democracy"]["enabled"]:
+            vote_size = self.config["anarchy-democracy"]["size"]
+            vote_state =  530 #int(round(vote_size / 2))
+        if self.config["polling"]["enabled"] or self.config["anarchy-democracy"]["enabled"]:
+            polling = time.time()
+            tick = self.config["polling"]["time"]
+            poll = {"a":0, "b":0, "up":0, "down":0, "left":0, "right":0, "start":0, "select":0}
+        while not exitFlag:
+            if self.config["polling"]["enabled"] or mode and time.time() > (polling + tick):
                 polling = time.time()
-                tick = self.config["polling"]["time"]
-                poll = {"a":0, "b":0, "up":0, "down":0, "left":0, "right":0, "start":0, "select":0}
-            while not exitFlag:
-                if self.config["polling"]["enabled"] and time.time() > (polling + tick):
-                    polling = time.time()
-                    turn = max(poll.iteritems(), key=operator.itemgetter(1))[0]
-                    if poll[turn] != 0:
-                        self.game.push_button(turn)
-                        print turn
-                    poll = dict.fromkeys(poll, 0)
+                turn = max(poll.iteritems(), key=operator.itemgetter(1))[0]
+                if poll[turn] != 0:
+                    self.to_web({"endpoll": {"winner": turn}})
+                    self.game.push_button(turn)
+                poll = dict.fromkeys(poll, 0)
+                self.to_web({"polling": {"poll": 0}})
 
-                if not self.queue.empty():
-                    job = self.queue.get()
-                    button = job["msg"]
-                    user = job["user"].capitalize()
-                    print(pbutton(user, button))
+            if not self.queue.empty():
+                job = self.queue.get()
+                button = job["msg"]
+                user = job["user"].capitalize()
+                print (pbutton(user, button))
+                if self.config["anarchy-democracy"]["show"]:
                     self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})
-                    if self.config['start_throttle']['enabled'] and button == 'start':   
-                        if time.time() - last_start < self.config['start_throttle']['time']:
-                            continue
-                        last_start = time.time()
-                    if self.config["polling"]["enabled"]:
-                        poll[button] += 1
-                    else:
-                        self.game.push_button(button)
-        except KeyboardInterrupt:
-            print ""
-            print "Shutting Down...."
-            print "Thank you for using twitch-plays."
-            print "Support this project at https://github.com/ynohtna92/twitch-plays"
-            exit()
+                elif button != "anarchy" and button != "democracy":
+                    self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})                    
+                if self.config['start_throttle']['enabled'] and button == 'start':   
+                    if time.time() - last_start < self.config['start_throttle']['time']:
+                        continue
+                    last_start = time.time()
+                if self.config["anarchy-democracy"]["enabled"]:
+                    if button == "anarchy" and vote_state != 0:
+                        vote_state -= 1
+                        if mode and vote_state < vote_size * 0.50:
+                            mode = False
+                            print "Set mode to anarchy."
+                    if button == "democracy" and vote_state < vote_size:
+                        vote_state += 1
+                        if not mode and vote_state > vote_size * 0.80:
+                            mode = True
+                            print "Set mode to democracy." 
+                    self.to_web({"anarchy_democracy": {"mode": mode, "size": vote_size, "state": vote_state}})
+                    if button == "anarchy" or button == "democracy":
+                        continue
+                if self.config["polling"]["enabled"] or mode:
+                    poll[button] += 1
+                    poll_sorted = dict((k, v) for k, v in poll.items() if v > 0)
+                    poll_sorted = sorted(poll_sorted.iteritems(), key=lambda x:x[1], reverse=True)[:6] 
+                    self.to_web({"polling": {"poll": poll_sorted}})
+                else:
+                    self.game.push_button(button)

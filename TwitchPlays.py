@@ -12,9 +12,16 @@ from config.config import *
 import lib.bot as bot
 
 def main():
-    global bot
-    #logging.basicConfig(level=logging.DEBUG)
-    bot = bot.Bot(config).run()
+    try:
+        global bot
+        #logging.basicConfig(level=logging.DEBUG) #debug
+        bot = bot.Bot(config).run()
+    except KeyboardInterrupt:
+        print ""
+        print "Shutting Down...."
+        print "Thank you for using twitch-plays."
+        print "Support this project at https://github.com/ynohtna92/twitch-plays"
+        exit()
 
 if __name__ == '__main__':
     main()

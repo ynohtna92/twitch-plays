@@ -40,3 +40,4 @@ class Game:
         win32api.keybd_event(self.button_to_key(button), 0, 0, 0)
         time.sleep(.07) # Minimum amount of time it takes for the key to register - adjust if nessessary
         win32api.keybd_event(self.button_to_key(button), 0, win32con.KEYEVENTF_KEYUP, 0)
+        

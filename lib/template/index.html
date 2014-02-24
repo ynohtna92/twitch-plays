@@ -5,8 +5,23 @@
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <style>
+    @font-face {
+    font-family: 'Pokemon GB';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../font/Pokemon GB.woff') format('woff'),
+         url('../font/Pokemon GB.ttf') format('truetype');
+    -webkit-font-smoothing: aliased;
+    font-smooth: never;
+    } 
+
+    .center {
+      width: 380px;
+      margin: 0 auto;
+    }
+
     tr {
-      font-family: monospace;
+      font-family: 'Pokemon GB';
       height: 100%;
       text-decoration:  none;
       background-color: black;
@@ -14,34 +29,63 @@
       white-space: pre;
     }
 
+    .table {
+      width: 380px;
+      border: 10px solid black;
+    }
+
     .table td {
       padding: 0px;
       border-top: none;
-      line-height: 12px;
-      height: 12px; 
+      line-height: 18px;
+      height: 18px; 
       text-align: center;
+      font-size: 18px;
     }
 
     .row {
       padding: 0px;
-      width: 200px;
+      width: 250px;
       margin: 0 auto;
     }
 
-    .span4 {
-      width: 200px;
-    }
-
     #time {
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 20px;
     }
 
-    #title {
-      font-size: 20px;
-      line-height: 20px;
-      height: 14px;
+    .title td{
+      font-size: 24px;
+      line-height: 24px;
     }
+
+    #anarchy {
+      float: left;
+      letter-spacing: -3px;
+      font-size: 16px;
+    }
+
+    #democracy {
+      float: right;
+      letter-spacing: -4px;
+      font-size: 14px;
+    }
+
+    #bar {
+      margin: 0 auto;
+    }
+
+    #anarchy-democracy-bar {
+      padding-top: 10px;
+    }
+
+    #last {
+      font-size: 20px;
+    }
+
+    #last, #spacer, #d0, #d1, #d2, #d3, #d4, #d5, #d6 {
+      display:none;
+    }
+
   </style>
 </head>
 <body>
@@ -50,76 +94,90 @@
     <hr>
       WebSocket status : <span id="message"></span>
     <hr>
-
-      <div class="row">
-        <div class="span4">
-          <table  class="table table-bordered">
-            <tr><td></td></tr>
-            <tr id="title">
-              <td class="title">Twitch Plays</td>
-            </tr>
-            <tr id="title">
-              <td class="title">Pokemon</td>
-            </tr>
-            <tr><td></td></tr>
-            <tr>
-              <td id="time">0d 0h 0m 0s</td>
-            </tr>
-            <tr><td></td></tr>
-            <tr>
-              <td id="0"></td>
-            </tr>
-            <tr>
-              <td id="1"></td>
-            </tr>
-            <tr>
-              <td id="2"></td>
-            </tr>
-            <tr>
-              <td id="3"></td>
-            </tr>
-            <tr>
-              <td id="4"></td>
-            </tr>
-            <tr>
-              <td id="5"></td>
-            </tr>
-            <tr>
-              <td id="6"></td>
-            </tr>
-            <tr>
-              <td id="7"></td>
-            </tr>
-            <tr>
-              <td id="8"></td>
-            </tr>
-            <tr>
-              <td id="9"></td>
-            </tr>
-            <tr>
-              <td id="10"></td>
-            </tr>
-            <tr>
-              <td id="11"></td>
-            </tr>
-            <tr>
-              <td id="12"></td>
-            </tr>
-            <tr>
-              <td id="13"></td>
-            </tr>
-            <tr>
-              <td id="14"></td>
-            </tr>
-            <tr>
-              <td id="15"></td>
-            </tr>
-            <tr>
-              <td id="16"></td>
-            </tr>
-            <tr><td></td></tr>
-          </table>
-        </div>
+      <div class="center">
+        <table  class="table">
+          <tr><td></td></tr>
+          <tr class="title">
+            <td>Twitch Plays</td>
+          </tr>
+          <tr class="title">
+            <td>Pokemon</td>
+          </tr>
+          <tr><td></td></tr>
+          <tr>
+            <td id="time">0d 0h 0m 0s</td>
+          </tr>
+          <tr><td id="anarchy-democracy-bar" style="white-space: normal;">
+            <div id="anarchy">Anarchy</div>
+            <div id="democracy">Democracy</div>
+            <div id="bar" style="background-color:white; height:15px;width:170px; position:relative;"><div id="indicator" style="background-color:black; height: 15px; width:2px; left: 50%; position:absolute;"></div><div id="mark" style="height:15px; border-left: 2px dotted black; position: absolute; left: 80%;"></div></div>   
+          </td></tr>
+          <tr><td></td></tr>
+          <tr><td id="last"></td></tr>
+          <tr><td id="spacer"></td></tr>
+          <tr><td id="d0"></td></tr>
+          <tr><td id="d1"></td></tr>
+          <tr><td id="d2"></td></tr>
+          <tr><td id="d3"></td></tr>
+          <tr><td id="d4"></td></tr>
+          <tr><td id="d5"></td></tr>
+          <tr><td id="d6"></td></tr>  
+          <tr>
+            <td id="0"></td>
+          </tr>
+          <tr>
+            <td id="1"></td>
+          </tr>
+          <tr>
+            <td id="2"></td>
+          </tr>
+          <tr>
+            <td id="3"></td>
+          </tr>
+          <tr>
+            <td id="4"></td>
+          </tr>
+          <tr>
+            <td id="5"></td>
+          </tr>
+          <tr>
+            <td id="6"></td>
+          </tr>
+          <tr>
+            <td id="7"></td>
+          </tr>
+          <tr>
+            <td id="8"></td>
+          </tr>
+          <tr>
+            <td id="9"></td>
+          </tr>
+          <tr>
+            <td id="10"></td>
+          </tr>
+          <tr>
+            <td id="11"></td>
+          </tr>
+          <tr>
+            <td id="12"></td>
+          </tr>
+          <tr>
+            <td id="13"></td>
+          </tr>
+          <tr>
+            <td id="14"></td>
+          </tr>
+          <tr>
+            <td id="15"></td>
+          </tr>
+          <tr>
+            <td id="16"></td>
+          </tr>
+          <tr>
+            <td id="17"></td>
+          </tr>
+          <tr><td></td></tr>
+        </table>
       </div>
 
     <hr>
@@ -127,9 +185,11 @@
   <script>
     var ws = new WebSocket('ws://localhost:8888/ws');
     var $message = $('#message');
-    var buffer_size = 16;
-    var input_stream_buffer = new Array(16);
-    var start = new Date(1392296399 * 1000);
+    var buffer_size = 17;
+    var input_stream_buffer = new Array(17);
+    var start = new Date(1392947369 * 1000);
+    var poll_buffer = new Array(4);
+    var last_poll_winner = "";
 
     setInterval(function(){
       var total_seconds = (new Date - start) / 1000;
@@ -162,11 +222,59 @@
 
       var json = JSON.parse(ev.data);
 
-      shiftArray();
-      input_stream_buffer[16] = json.button.formated;
+      if (json.button){
+        shiftArray();
+        input_stream_buffer[17] = json.button.formated;
 
-      for (var i = 0; i < input_stream_buffer.length; i++){
-        $('#' + i).text(input_stream_buffer[i]);
+        for (var i = 0; i < input_stream_buffer.length; i++){
+          $('#' + i).text(input_stream_buffer[i]);
+        }
+      }
+      if (json.polling){
+        if (json.polling.winner) {
+          last_poll_winner = json.polling.winner;
+          $("#last").text(last_poll_winner);
+        }
+        if (json.polling.poll != 0){
+          jQuery.each(json.polling.poll, function (i, val) {
+            $("#d" + i).text(formatOutput(val[0], val[1]));
+          });
+        }
+        else if (json.polling.poll == 0){
+          for (var i = 0; i < 6; i++) {
+            $("#d" + i).text("");
+          }
+        }
+      }
+      if (json.endpoll) {
+        console.log(json.endpoll.winner);
+        last_poll_winner = json.endpoll.winner;
+        $("#last").text(last_poll_winner);
+      }
+      if (json.anarchy_democracy){
+        if (json.anarchy_democracy.mode){
+          $("#mark").css("left","50%");
+          $("#anarchy").css("color","grey");
+          $("#democracy").css("color","white");
+          for (var i = 0; i < 9; i++){
+            $("#d" + i).show();
+            $("#" + i).hide();
+          } 
+          $("#last").show();
+          $("#spacer").show();
+        }
+        else {
+          $("#mark").css("left", "80%");
+          $("#anarchy").css("color","white");
+          $("#democracy").css("color","grey");
+          for (var i = 0; i < 9; i++){
+            $("#d" + i).hide();
+            $("#" + i).show();
+          }            
+          $("#last").hide();
+          $("#spacer").hide();
+        }
+        $("#indicator").css("left", Math.floor(json.anarchy_democracy.state/json.anarchy_democracy.size * 100) + "%");
       }
     };
     ws.onclose = function(ev){
@@ -180,6 +288,25 @@
 
     function shiftArray(){
       input_stream_buffer = input_stream_buffer.concat(input_stream_buffer.splice(0,1));
+    };
+
+    function formatOutput(left, right){
+      var buffer_size = 20;
+      var buffer_used = 0;
+      var whitespace_size = 1;
+
+      buffer_used = right.toString().length + whitespace_size;
+      var buffer_left = buffer_size - buffer_used;
+
+      if (buffer_left > left.length) {
+        whitespace_size += buffer_left - left.length;
+      }
+
+      var left_end = buffer_left;
+
+      left = left.substring(0, left_end);
+
+      return left + Array(whitespace_size + 1).join(" ") + right;
     };
 
     function time(){

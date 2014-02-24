@@ -58,6 +58,5 @@ class Irc(irc.bot.SingleServerIRCBot):
         nick = e.source.nick
         c = self.connection
         cm = cmd.lower()
-
-        if cm in ["a", "b", "up", "down", "left", "right", "start", "select"]:
+        if cm in ["a", "b", "up", "down", "left", "right", "start", "select", "anarchy", "democracy"]:
             self.queue.put({"user":nick, "msg":cm})
