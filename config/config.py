@@ -8,7 +8,7 @@ config = {
 
 	'account': {
 		'username': 'username',
-		'password': 'oauth:' # oauth:aku9ihj1apk3n626pxgmyaal3cavz6d # get this fromm http://twitchapps.com/tmi/
+		'password': 'oauth:' # get this fromm http://twitchapps.com/tmi/
 	},
 
 	'post': {
