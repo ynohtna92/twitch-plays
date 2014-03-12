@@ -17,7 +17,7 @@ class Bot:
 
     def __init__(self, config):
         self.config = config
-        self.game = Game()
+        self.game = Game(self.config)
         self.queue = Queue.Queue(0)
         pp("Initiating Irc Thread")
         self.c1 = Control(1, "Controller-1", self.config, self.queue, Irc.from_config(self.config, self.queue).start)
@@ -37,7 +37,7 @@ class Bot:
         mode = False
         if self.config["anarchy-democracy"]["enabled"]:
             vote_size = self.config["anarchy-democracy"]["size"]
-            vote_state = int(round(vote_size / 2))
+            vote_state =  530 #int(round(vote_size / 2))
         if self.config["polling"]["enabled"] or self.config["anarchy-democracy"]["enabled"]:
             polling = time.time()
             tick = self.config["polling"]["time"]

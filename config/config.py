@@ -7,9 +7,14 @@ config = {
 	},
 
 	'account': {
-		'username': 'user',
-		'password': 'oauth:' # get this fromm http://twitchapps.com/tmi/
+		'username': 'anth92',
+		'password': 'oauth:rmaz3oz4rwl7xt887wf9sme4wpexm6a' # oauth:aku9ihj1apk3n626pxgmyaal3cavz6d # get this fromm http://twitchapps.com/tmi/
 	},
+
+	'post': {
+		'enabled': False, 					# Use PostMessage instead of emulating the keyboard. 
+		'windowTitle': "VirtualBoyAdvance"	# This will allow you to send keyboard commands to a minimised window.
+	},		  								# Only works for some games / emulators.
 
 	'start_throttle': {
 		'enabled': False,
