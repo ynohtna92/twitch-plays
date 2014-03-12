@@ -7,8 +7,8 @@ config = {
 	},
 
 	'account': {
-		'username': 'anth92',
-		'password': 'oauth:rmaz3oz4rwl7xt887wf9sme4wpexm6a' # oauth:aku9ihj1apk3n626pxgmyaal3cavz6d # get this fromm http://twitchapps.com/tmi/
+		'username': 'username',
+		'password': 'oauth:' # oauth:aku9ihj1apk3n626pxgmyaal3cavz6d # get this fromm http://twitchapps.com/tmi/
 	},
 
 	'post': {
