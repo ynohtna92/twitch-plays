@@ -28,12 +28,13 @@ class Bot:
         self.c2.daemon = True
         self.c2.start()
 
+    # Use this function to send custom json objects to the websocket.
     def to_web(self, msg):
         web.send(msg)
 
     def run(self):
         pp("Starting Monitoring Loop")
-        mode = False #
+        mode = False #false == anarchy : true == democracy
         throttle_timers = {button:0 for button in self.config['throttled_buttons'].keys()}
 
         if self.config["anarchy-democracy"]["enabled"]:

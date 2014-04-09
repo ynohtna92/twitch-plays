@@ -17,6 +17,7 @@ config = {
 	},		  								# Only works for some games / emulators.
 
 	# List of commands to filter
+	# if adding more keys remember to update the game.py keymaps to reflect these changes
 	'commands': [
 		'a', 'b', 'left', 'right', 'up', 'down', 'start', 'select', 'democracy', 'anarchy'
 	],
