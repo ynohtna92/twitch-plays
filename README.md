@@ -55,3 +55,8 @@ It is updated live and can be broadcasted using regions on your broadcasting sof
 If you have any question or need help, feel free to [message me on Twitch](http://www.twitch.tv/message/compose?to=aidraj_) or send an email to `aidraj0 at gmail dot com`.
 
 Alternatively message the owner of this fork at [Twitch](http://www.twitch.tv/message/compose?to=anth92).
+
+Known Issues
+============
+
+- No underscore character made in the Pokemon GB font causing weird spacing.
