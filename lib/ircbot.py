@@ -5,10 +5,11 @@ from misc import pp
 import Queue
 
 class Irc(irc.bot.SingleServerIRCBot):
-    def __init__(self, queue, channel, nickname, server, port=6667, password=None):
+    def __init__(self, config, queue, channel, nickname, server, port=6667, password=None):
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port, password)], nickname, nickname)
         self.channel = channel
         self.queue = queue
+        self.config = config
 
     @classmethod
     def from_config(cls, config, queue):
@@ -20,7 +21,7 @@ class Irc(irc.bot.SingleServerIRCBot):
         nickname = config['account']['username']
         password = config['account']['password']
 
-        return cls(queue, channel, nickname, server, port, password)
+        return cls(config, queue, channel, nickname, server, port, password)
         
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
@@ -58,5 +59,5 @@ class Irc(irc.bot.SingleServerIRCBot):
         nick = e.source.nick
         c = self.connection
         cm = cmd.lower()
-        if cm in ["a", "b", "up", "down", "left", "right", "start", "select", "anarchy", "democracy"]:
+        if cm in self.config["commands"]:
             self.queue.put({"user":nick, "msg":cm})

@@ -33,15 +33,18 @@ class Bot:
 
     def run(self):
         pp("Starting Monitoring Loop")
-        last_start = time.time()
-        mode = False
+        mode = False #
+        throttle_timers = {button:0 for button in self.config['throttled_buttons'].keys()}
+
         if self.config["anarchy-democracy"]["enabled"]:
             vote_size = self.config["anarchy-democracy"]["size"]
-            vote_state =  530 #int(round(vote_size / 2))
+            vote_state = int(round(vote_size / 2))
+
         if self.config["polling"]["enabled"] or self.config["anarchy-democracy"]["enabled"]:
             polling = time.time()
             tick = self.config["polling"]["time"]
-            poll = {"a":0, "b":0, "up":0, "down":0, "left":0, "right":0, "start":0, "select":0}
+            poll = {poll:0 for poll in set(self.config["commands"]) - set(self.config["filted_commands"])}
+
         while not exitFlag:
             if self.config["polling"]["enabled"] or mode and time.time() > (polling + tick):
                 polling = time.time()
@@ -57,14 +60,15 @@ class Bot:
                 button = job["msg"]
                 user = job["user"].capitalize()
                 print (pbutton(user, button))
-                if self.config["anarchy-democracy"]["show"]:
-                    self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})
-                elif button != "anarchy" and button != "democracy":
-                    self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})                    
-                if self.config['start_throttle']['enabled'] and button == 'start':   
-                    if time.time() - last_start < self.config['start_throttle']['time']:
+
+                if button not in self.config["filted_commands"]:
+                    self.to_web({"button": {"user":user, "button":button, "formated": pbutton(user, button)}})  
+
+                if button in self.config['throttled_buttons']:   
+                    if time.time() - throttle_timers[button] < self.config['throttled_buttons'][button]:
                         continue
-                    last_start = time.time()
+                    throttle_timers[button] = time.time()
+
                 if self.config["anarchy-democracy"]["enabled"]:
                     if button == "anarchy" and vote_state != 0:
                         vote_state -= 1
@@ -79,6 +83,7 @@ class Bot:
                     self.to_web({"anarchy_democracy": {"mode": mode, "size": vote_size, "state": vote_state}})
                     if button == "anarchy" or button == "democracy":
                         continue
+                        
                 if self.config["polling"]["enabled"] or mode:
                     poll[button] += 1
                     poll_sorted = dict((k, v) for k, v in poll.items() if v > 0)
