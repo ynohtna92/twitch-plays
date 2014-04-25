@@ -9,8 +9,8 @@
     font-family: 'Pokemon GB';
     font-style: normal;
     font-weight: 400;
-    src: url('../font/Pokemon GB.woff') format('woff'),
-         url('../font/Pokemon GB.ttf') format('truetype');
+    src: url('/font/Pokemon GB.woff') format('woff'),
+         url('/font/Pokemon GB.ttf') format('truetype');
     -webkit-font-smoothing: aliased;
     font-smooth: never;
     } 
@@ -187,7 +187,7 @@
     var $message = $('#message');
     var buffer_size = 17;
     var input_stream_buffer = new Array(17);
-    var start = new Date(1392947369 * 1000);
+    var start = new Date(1392947369 * 1000); //Use http://www.epochconverter.com/ to generate a new time and then replace the 10 digit number with it.
     var poll_buffer = new Array(4);
     var last_poll_winner = "";
 

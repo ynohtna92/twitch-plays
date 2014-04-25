@@ -1,6 +1,7 @@
 import os
 import time
 if os.name == 'nt':
+    import win32com.client
     import win32con
     import win32gui
     import win32api
@@ -55,8 +56,8 @@ class Game:
 
     def __init__(self, config):
         self.config = config
-        if os.name == 'nt' and self.config['post']['enabled']:
-            self.windowTitle = self.config['post']['windowTitle']
+        if os.name == 'nt' and self.config['features']['post']:
+            self.windowTitle = self.config['features']['windowTitle']
             winlist=[]
             win32gui.EnumWindows(self.enumHandler, winlist)
             self.HWND = winlist[0]
@@ -70,7 +71,10 @@ class Game:
 
     def push_button(self, button):
         if os.name == 'nt':
-            if self.config['post']['enabled']:
+            if self.config['features']['focus']:
+                shell = win32com.client.Dispatch('WScript.Shell')
+                shell.AppActivate(self.config['features']['windowTitle'])
+            if self.config['features']['post']:
                 win32api.PostMessage(self.HWND, win32con.WM_CHAR, self.button_to_key(button), 0)
             else:
                 win32api.keybd_event(self.button_to_key(button), 0, 0, 0)

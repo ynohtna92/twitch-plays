@@ -11,10 +11,11 @@ config = {
 		'password': 'oauth:' # get this fromm http://twitchapps.com/tmi/
 	},
 
-	'post': {
-		'enabled': False, 					# Use PostMessage instead of emulating the keyboard. 
-		'windowTitle': "VirtualBoyAdvance"	# This will allow you to send keyboard commands to a minimised window.
-	},		  								# Only works for some games / emulators.
+	'features': {
+		'post': False,						# Use PostMessage instead of emulating the keyboard. (Only works for some emulators/games)
+		'focus': True, 						# Focus a window containing the windowTitle below before sending a keypress.
+		'windowTitle': "VisualBoyAdvance"	# Window title used for PostMessage and focusing.
+	},
 
 	# List of commands to filter
 	# if adding more keys remember to update the game.py keymaps to reflect these changes
@@ -43,4 +44,7 @@ config = {
 		'enabled': True, # This will initate into anarchy mode. Also overrides polling mode enabled flag.
 		'size': 1000 # size of vote pool. The larger, the slower it will move, adjust according to how many viewers you have.
 	}
+
+	# To change the web app displayed time go to line 190 of \lib\template\index.html 
+	# and replace the 10 digit value with your chosen epoch start time
 }
