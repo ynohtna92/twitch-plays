@@ -5,13 +5,16 @@ Look alike of [Twitch Plays Pokemon](http://twitch.tv/twitchplayspokemon).
 
 Windows, OSX and Linux
 
+<p align="center">
+  <img src="https://camo.githubusercontent.com/c75af50cf9fbbb206d7ec171d1a3925ba6ef3f9d/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f323234353331382f323234333530322f62643330356564322d396432632d313165332d393733642d3237636633393830646361372e706e67" alt="Demonstration broadcasting object">
+</p>
 
 Installation
 ============
 
 **Dependencies**
 
-* You're going to need to have (**Windows Only**) [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with Python [2.7.x](http://www.python.org/download/releases/2.7/).
+* You're going to need to have (**Windows Only**) [pywin32](http://sourceforge.net/projects/pywin32/) installed. If you run into any errors try running this with (**Linux/OSX Only**)Python [2.7.x](http://www.python.org/download/releases/2.7/).
 
 * [irc 8.5.4](https://pypi.python.org/pypi/irc) - IRC Client
 
@@ -55,3 +58,8 @@ It is updated live and can be broadcasted using regions on your broadcasting sof
 If you have any question or need help, feel free to [message me on Twitch](http://www.twitch.tv/message/compose?to=aidraj_) or send an email to `aidraj0 at gmail dot com`.
 
 Alternatively message the owner of this fork at [Twitch](http://www.twitch.tv/message/compose?to=anth92).
+
+Known Issues
+------------
+
+- No underscore character made in the Pokemon GB font causing weird spacing.
